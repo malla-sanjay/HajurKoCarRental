@@ -36,7 +36,6 @@ const Login = () => {
         });
       } else {
         const body = { email, password };
-        console.log(body);
         const response = await fetch(
           "https://localhost:44396/api/Authentication/LoginUser",
           {
@@ -80,6 +79,27 @@ const Login = () => {
           localStorage.setItem("userName", result.data.userName);
           localStorage.setItem("role", result.data.userRole);
 
+          //For attachment criteria
+          const attachResp = await fetch(
+            "https://localhost:44396/api/Authentication/ViewAttachmentByID",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email }),
+            }
+          );
+          const attachRes = await attachResp.json();
+          console.log(attachRes);
+
+          if (attachRes.data.length === 0) {
+            //not found attachment
+            localStorage.setItem("hasAttach", false);
+          } else if (attachRes.data[0].status === "SUCCESS") {
+            //Success toast
+            localStorage.setItem("hasAttach", true);
+          } else {
+            throw new Error("error at attachment");
+          }
           //Redirect to root
           setTimeout(() => {
             router.push("http://localhost:3000");

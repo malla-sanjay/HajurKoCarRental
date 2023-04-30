@@ -2,90 +2,26 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { isAnyInputEmpty } from "@/utility";
 
 const ChangePassword = () => {
   const [passwords, setPasswords] = useState({
     current_password: "",
-    new_password: "",
+    newPassword: "",
     confirm_password: "",
   });
 
-  const { current_password, new_password, confirm_password } = passwords;
-
-  const onChangeUserForm = (e) => {
-    setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
-  };
+  const { current_password, newPassword, confirm_password } = passwords;
 
   const onChangePasswordForm = (e) => {
     setPasswords({ ...passwords, [e.target.name]: e.target.value });
   };
 
-  const submitUserForm = async (e) => {
+  const onSubmitPasswordForm = async (e) => {
     e.preventDefault();
     try {
-      const email = localStorage.getItem("email");
-      const passwordStatus = await fetch(
-        "http://localhost:5000/authentication/checkPass",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            token: localStorage.getItem("token"),
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      const passwordISOK = await passwordStatus.json();
-      // if password is ok user account is updated else error message toast
-      if (!passwordISOK.error) {
-        //post request to account and toast accordingly
-        const response = await fetch(
-          "http://localhost:5000/authentication/updateAccount",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              token: localStorage.getItem("token"),
-            },
-            body: JSON.stringify({ college, admin, email }),
-          }
-        );
-        const updateStatus = await response.json();
-
-        if (!updateStatus.error) {
-          toast.success(updateStatus.message, {
-            position: "bottom-left",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          //local storage update
-          localStorage.setItem("college", college);
-          localStorage.setItem("admin", admin);
-          //page refresh
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        } else {
-          toast.error(updateStatus.message, {
-            position: "bottom-left",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      } else {
-        //Expected server error
-        toast.error(passwordISOK.message, {
+      if (isAnyInputEmpty(passwords)) {
+        toast.error("Fill all the inputs", {
           position: "bottom-left",
           autoClose: 3000,
           hideProgressBar: false,
@@ -95,72 +31,67 @@ const ChangePassword = () => {
           progress: undefined,
           theme: "light",
         });
-      }
-    } catch (err) {
-      //Expected server error
-      toast.error("SERVER ERROR!", {
-        position: "bottom-left",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      console.log(err.message);
-    }
-  };
-
-  const onSubmitPasswordForm = async (e) => {
-    e.preventDefault();
-    try {
-      //check password new = password confirm
-      if (new_password === confirm_password) {
-        //check password correct or not
-        const email = localStorage.getItem("email");
-        const password = current_password;
-        const response = await fetch(
-          "http://localhost:5000/authentication/checkPass",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              token: localStorage.getItem("token"),
-            },
-            body: JSON.stringify({ email, password }),
-          }
-        );
-        const passIsCorrect = await response.json();
-
-        if (!passIsCorrect.error) {
+      } else {
+        //check password new = password confirm
+        if (newPassword === confirm_password) {
+          //check password correct or not
+          const email = localStorage.getItem("email");
+          const password = current_password;
           const response = await fetch(
-            "http://localhost:5000/authentication/changePassword",
+            "https://localhost:44396/api/Authentication/LoginUser",
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ email, new_password }),
+              body: JSON.stringify({ email, password }),
             }
           );
+          const loginResult = await response.json();
 
-          const passwordChanged = await response.json();
-          if (!passwordChanged.error) {
-            //success message
-            toast.success(passwordChanged.message, {
-              position: "bottom-left",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+          console.log(loginResult);
+
+          if (loginResult.data.status === "Success") {
+            const response = await fetch(
+              "https://localhost:44396/api/Authentication/ChangePassword",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, newPassword }),
+              }
+            );
+
+            const changeResult = await response.json();
+            if ((changeResult.data.status = "SUCCESS")) {
+              //success message
+              toast.success("Password Changed", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            } else {
+              //error message
+              toast.error("Error while changing password", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }
           } else {
-            //error message
-            toast.error(passwordChanged.message, {
+            //password incorrect
+            toast.error("Password Incorrect", {
               position: "bottom-left",
               autoClose: 3000,
               hideProgressBar: false,
@@ -172,8 +103,8 @@ const ChangePassword = () => {
             });
           }
         } else {
-          //password incorrect
-          toast.error(passIsCorrect.message, {
+          //two password dont match
+          toast.error("The new passwords must match", {
             position: "bottom-left",
             autoClose: 3000,
             hideProgressBar: false,
@@ -184,18 +115,6 @@ const ChangePassword = () => {
             theme: "light",
           });
         }
-      } else {
-        //two password dont match
-        toast.error("The new passwords must match", {
-          position: "bottom-left",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
       }
     } catch (err) {
       //Expected server error
@@ -228,7 +147,7 @@ const ChangePassword = () => {
         theme="light"
       />
 
-      <div className="bg-gray-400 w-0.4 h-96 "></div>
+      <div className="bg-gray-400 w-0.35 h-96 "></div>
       <form className=" p-12 py-0 w-2/5 update account h-4/5 flex flex-col">
         <h1 className=" text-2xl font-semibold mb-6">Change Password</h1>
         <label htmlFor="current_password:" className="text-xl font-normal mb-3">
@@ -243,15 +162,15 @@ const ChangePassword = () => {
           onChange={(e) => onChangePasswordForm(e)}
           placeholder="Enter Current Password"
         />
-        <label htmlFor="new_password" className="text-xl font-normal mb-3">
+        <label htmlFor="newPassword" className="text-xl font-normal mb-3">
           New Password
         </label>
         <input
           className="text-xl p-2 bg-purple-100"
           type="password"
-          name="new_password"
-          id="new_password"
-          value={new_password}
+          name="newPassword"
+          id="newPassword"
+          value={newPassword}
           onChange={(e) => onChangePasswordForm(e)}
           placeholder="New password here"
         />

@@ -1,6 +1,5 @@
 //Utility functions that repeate too often
-
-const isAnyInputEmpty = (obj) => {
+export const isAnyInputEmpty = (obj) => {
   for (const key in obj) {
     if (obj[key].trim() === "") {
       return true;
@@ -9,9 +8,29 @@ const isAnyInputEmpty = (obj) => {
   return false;
 };
 
-const logout = () => {
-  //clear user details from browser
-  localStorage.clear();
+export const base64ToImage = (base64String) => {
+  // Create an Image object
+  const image = new Image();
+
+  // Set the source of the image to the base64 string
+  image.src = `data:image/png;base64,${base64String}`;
+
+  // Return the image object
+  return image;
 };
 
-export { isAnyInputEmpty, logout };
+export const imageToBase64 = (imageFile) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsDataURL(imageFile);
+  });
+};
