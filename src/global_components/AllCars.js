@@ -12,7 +12,7 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 
@@ -25,18 +25,25 @@ export default function AllCars() {
   const body = { user_ID };
 
   const loadCars = async () => {
-    const result = await fetch(
-      "https://localhost:44396/api/Authentication/GetAllCars",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }
-    );
-    console.log(result.data);
-    const data = await result.json();
-    setCars(data);
-  };
+    try{
+      const result = await fetch(
+        "https://localhost:44396/api/Authentication/GetAllCars",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await result.json();
+  
+          setCars(data.data);
+          console.log(data.data)
+    
+    }
+    catch(err){
+      console.log(err)
+    }
+   };
 
   React.useEffect(() => {
     loadCars();
@@ -72,9 +79,9 @@ export default function AllCars() {
             </Typography>
             <Grid container spacing={4}>
               {/* {packages.map((spackage, index) => ( */}
-              {/* {cars.map((car, index) => ( */}
+              {cars.map((car, index) => (
                 <Grid item 
-                // key={car.CarId}
+                key={car.car_ID}
                  xs={12} sm={6} md={4}>
                   <Card
                     sx={{
@@ -84,19 +91,22 @@ export default function AllCars() {
                     }}
                     style={{ boxShadow: "2px 3px 10px #888888" }}
                   >
+                    <div style={{display:"flex", justifyContent:"center"}}> 
                     <CardMedia
                       component="img"
-                      height="150"
-                      width="150"
-                      //src={`http://localhost:8080/p/image/${spackage.id}`}
+                
+                     style={{height:"150px", width:"150px"}}
+                      src={`data:image/png;base64,${car.car_Image}`}
+
                       alt="random"
                     />
+                    </div>
                     <CardContent sx={{ flexGrow: 2 }}>
                       <Stack direction="row" spacing={3} marginBottom={2}>
-                        <Typography variant="h6">{`{car.CarModel}`}</Typography>
+                        <Typography variant="h6">{`${car.car_Model}`}</Typography>
 
                         <Typography color="primary" variant="filled">
-                          {`{car.CarCompany}`}
+                          {`${car.car_Company}`}
                         </Typography>
                       </Stack>
 
@@ -110,14 +120,14 @@ export default function AllCars() {
                         <Stack direction="row" spacing={2}>
                           <Chip
                             icon={<PaidIcon color="warning" />}
-                            label={`car.PricePerDay`}
+                            label={`${car.price_PerDay}`}
                           />
                           <Chip
                             variant="outlined"
-                            icon={
-                              <LocationOnIcon color="error"></LocationOnIcon>
-                            }
-                            label={`car.CarYear`}
+                            // icon={
+                            //   <LocationOnIcon color="error"></LocationOnIcon>
+                            // }
+                            label={`${car.car_Year}`}
                           />
                         </Stack>
                       </Stack>
@@ -127,7 +137,7 @@ export default function AllCars() {
                         spacing={1}
                         style={{ marginTop: 5, justifyContent: "left" }}
                       >
-                        <Typography>{`{car.Description}`}</Typography>
+                        <Typography>{`${car.description}`}</Typography>
                       </Stack>
                     </CardContent>
                     <CardActions style={{ justifyContent: "center" }}>
@@ -139,15 +149,9 @@ export default function AllCars() {
                       <Button
                         size="small"
                         variant="contained"
-                        className="hover1"
-                        sx={{
-                          "&:hover": {
-                            borderRadius: 13,
-                            width: "fit-content",
-                            boxShadow: "inset 100px 0 0 0 #54b3d6",
-                          },
-                        }}
-                        style={{ borderRadius: 20 }}
+                       
+                        
+                        style={{backgroundColor: "black", borderRadius: 20 }}
                       >
                         Explore
                       </Button>
@@ -155,7 +159,7 @@ export default function AllCars() {
                     </CardActions>
                   </Card>
                 </Grid>
-              {/* ))} */}
+              ))} 
             </Grid>
           </div>
         </main>
