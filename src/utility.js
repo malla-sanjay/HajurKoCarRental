@@ -9,4 +9,9 @@ const isAnyInputEmpty = (obj) => {
   return false;
 };
 
-export { isAnyInputEmpty };
+const logout = () => {
+  //clear user details from browser
+  localStorage.clear();
+};
+
+export { isAnyInputEmpty, logout };

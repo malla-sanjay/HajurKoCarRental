@@ -78,6 +78,7 @@ const Login = () => {
           localStorage.setItem("contact", result.data.phoneNumber);
           localStorage.setItem("address", result.data.address);
           localStorage.setItem("userName", result.data.userName);
+          localStorage.setItem("role", result.data.userRole);
 
           //Redirect to root
           setTimeout(() => {
