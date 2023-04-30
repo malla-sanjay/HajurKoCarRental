@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from 'react'
 import Button from "@mui/material/Button";
 import CameraIcon from "@mui/icons-material/PhotoCamera";
 import Card from "@mui/material/Card";
@@ -12,59 +12,14 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import CheckIcon from "@mui/icons-material/Check";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import MainNavbar from "./MainNavBar";
 import Divider from '@mui/material/Divider';
-import axios from "axios";
-import { Link } from "react-router-dom";
-import Diversity1Icon from "@mui/icons-material/Diversity1";
-import { LockReset, SettingsAccessibility } from "@mui/icons-material";
-import ShieldIcon from "@mui/icons-material/Shield";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import Diversity2Icon from "@mui/icons-material/Diversity2";
-import { width } from "@mui/system";
-import "../../index.css"
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"© "}
-      <Link color="inherit" href="/">
-        www.travelandtour.com
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {""}
-    </Typography>
-  );
-}
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const theme = createTheme();
 
 export default function AllCars() {
-  
-  const [packages, setPackages] = React.useState([{}]);
-  const [search, setSearch] = React.useState("");
-  
-  React.useEffect(() => {
-    console.log("use");
-    loadPackages();
-  }, []);
-  const loadPackages = async () => {
-    console.log("load");
-    const result = await axios.get("https://localhost:44396/api/Authentication/GetAllCars");
-  //console.log(result.data);
-    setPackages(result.data);
-  };
-  
   return (
     <div> 
     <ThemeProvider theme={theme}>
@@ -73,7 +28,7 @@ export default function AllCars() {
         <div style={{ margin: 20, padding: 20 }} maxWidth="md">
           {/* End hero unit */}
           <Stack direction="row" spacing={2} justifyContent={"center"}>
-            <form className="d-flex" role="search">
+            {/* <form className="d-flex" role="search">
               <input
                 className="form-control me-2"
                 type="search"
@@ -88,21 +43,25 @@ export default function AllCars() {
               >
                 Search
               </button>
-            </form>
+            </form> */}
+           
           </Stack>
           <Typography color="text.secondary" style={{ margin: "10px" }}>
-            View the latest cars available for rent
-          </Typography>
+            View all the cars.
+         </Typography>
           <Grid container spacing={4}>
             {/* {packages.map((spackage, index) => ( */}
-            {packages
+            {/* {packages
               .filter((packages) => {
                 return search.toLowerCase() === ""
                   ? packages
-                  : packages.CarModel.toLowerCase().includes(search);
+                  : packages.name.toLowerCase().includes(search);
               })
-              .map((spackage, index) => (
-                <Grid item key={spackage.CarId} xs={12} sm={6} md={4}>
+             
+              .map((spackage, index) => ( */}
+                <Grid item 
+                // key={spackage.id} 
+                xs={12} sm={6} md={4}>
                   <Card
                     sx={{
                       display: "flex",
@@ -115,29 +74,62 @@ export default function AllCars() {
                       component="img"
                       height="150"
                       width="150"
-                    //   src={`http://localhost:8080/p/image/${spackage.id}`}
+                      //src={`http://localhost:8080/p/image/${spackage.id}`}
                       alt="random"
                     />
                     <CardContent sx={{ flexGrow: 2 }}>
                       <Stack direction="row" spacing={3} marginBottom={2}> 
-                      <Typography variant="h6">{spackage.CarModel}</Typography>
+                      <Typography variant="h6">{`Car.Model`}</Typography>
                       <Divider orientation="vertical" style={{backgroundColor:"#96ebd4"}} flexItem sx={{ borderRightWidth: 2 }} />
-                      <Chip label={`${spackage.CarYear}`} color="primary" variant ="filled" />
-                    
+                      <Chip label={`Car.Company`} color="primary" variant ="filled" />
+            
                       </Stack>
+                      <Divider sx={{ borderBottomWidth: 2}} style={{backgroundColor:"#96ebd4"}}/>
+                      <Stack
+                        direction="row"
+                        spacing={2}
+                        marginBottom={2}
+                        marginTop={2}
+                        style={{  justifyContent: "left" }}
+                      >
+                          
+                
+                          
+                        
+                           
                       
-                      <Stack  direction ="row" spacing={1}  style={{ marginTop: 5, justifyContent: "left" }}> 
+                            <Stack direction="row" spacing={2}>
+                              <Chip
+                                icon={<PaidIcon color="warning" />}
+                                label={
+                                  <span>
+                                    {`Car.Price`}
+                                    <span></span>
+                                  </span>
+                                }
+                              />
+                              <Chip
+                        variant="outlined"
+                          icon={<LocationOnIcon color="error"></LocationOnIcon>}
+                          label={`Car.Year`}
+                        />
+                            </Stack>
+                         
+                       
+                      </Stack>
+                     
+                      <Stack  direction ="column" spacing={1}  style={{ marginTop: 5, justifyContent: "left" }}> 
                         
                        
-                         <Chip variant="outlined" label={`${spackage.CarCompany}`} />
+                         <Chip variant="outlined" label={`Car.Desc`} />
                          </Stack>
                     </CardContent>
                     <CardActions style={{ justifyContent: "center" }}>
-                      <Link
+                      {/* <Link
                   
                         to={`/package/${spackage.id}`}
                         style={{ textDecoration: "none" }}
-                      >
+                      > */}
                         <Button
                           size="small"
                           variant="contained"
@@ -145,13 +137,13 @@ export default function AllCars() {
                           sx={{ "&:hover": { borderRadius: 13, width: "fit-content", boxShadow: "inset 100px 0 0 0 #54b3d6" } }}  
                           style={{ borderRadius: 20 }}
                         >
-                          Rent
+                          Explore
                         </Button>
-                      </Link>
+                      {/* </Link> */}
                     </CardActions>
                   </Card>
                 </Grid>
-              ))}
+              {/* ))} */}
           </Grid>
         </div>
       </main>
@@ -167,12 +159,12 @@ export default function AllCars() {
           color="text.secondary"
           component="p"
         >
-          ---
+          Travel and Tour Management System
         </Typography>
-        <Copyright />
+       
       </Box>
       {/* End footer */}
     </ThemeProvider>
     </div>
-  );
+  )
 }
