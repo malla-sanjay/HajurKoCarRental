@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { imageToBase64 } from "@/utility";
 
 const UserAttachments = () => {
   const [imageBinary, setImageBinary] = useState(null);
@@ -19,19 +22,23 @@ const UserAttachments = () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target.result;
-      setImageBinary(result);
-      setErrorMessage("");
-    };
-    reader.readAsBinaryString(file);
+    imageToBase64(file)
+      .then((base64String) => {
+        setImageBinary(base64String);
+        setErrorMessage("");
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage("Error converting image to base64.");
+      });
   };
 
   const addAttachment = async (e) => {
     e.preventDefault();
+    console.log(imageBinary);
     try {
       if (imageBinary === null) {
+        console.log("if");
         toast.error("Add an Attachment first", {
           position: "bottom-left",
           autoClose: 3000,
@@ -43,6 +50,7 @@ const UserAttachments = () => {
           theme: "light",
         });
       } else {
+        console.log("else");
         const email = localStorage.getItem("email");
         const body = { email, attachmentImage: imageBinary };
         console.log(body);
@@ -81,6 +89,7 @@ const UserAttachments = () => {
             progress: undefined,
             theme: "light",
           });
+          localStorage.setItem("hasAttach", true);
           setTimeout(() => {
             //refresh the page so the attachment loads immediately
             location.reload();
@@ -119,7 +128,7 @@ const UserAttachments = () => {
       <div>
         <label
           htmlFor="file-upload"
-          className="page-content bg-white rounded-lg flex mt-10"
+          className="page-content text-2xl bg-white rounded-lg flex mt-10"
         >
           Upload an image or PDF:
         </label>
@@ -134,7 +143,11 @@ const UserAttachments = () => {
           <p className="error-message text-red-600 text-xl">{errorMessage}</p>
         )}
       </div>
-      <button type="submit" onClick={() => addAttachment()}>
+      <button
+        type="submit"
+        className="text-xl mt-5 p-3 px-5 text-white rounded-lg bg-slate-700"
+        onClick={(e) => addAttachment(e)}
+      >
         Submit
       </button>
     </form>

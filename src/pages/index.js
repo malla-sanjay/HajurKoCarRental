@@ -6,9 +6,8 @@ import AllCars from "@/global_components/AllCars";
 export default function Home() {
   return (
     <>
-      <Navibar> </Navibar>
-      <AllCars></AllCars>
-      <div>Index page</div>
+      <Navibar />
+      <AllCars />
     </>
   );
 }

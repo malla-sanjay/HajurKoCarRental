@@ -148,7 +148,7 @@ const ChangePassword = () => {
       />
 
       <div className="bg-gray-400 "></div>
-      <form className=" p-12 py-0 w-2/5 update account h-4/5 flex flex-col">
+      <form className=" p-12 py-0 w-2/5  flex flex-col">
         <h1 className=" text-4xl font-semibold mb-6">Change Password</h1>
         <label htmlFor="current_password:" className="text-xl font-normal mb-3">
           Current Password
