@@ -16,7 +16,7 @@ const UserSettings = () => {
     <>
       <div className="page-content bg-white rounded-lg flex mt-20 justify-center align-middle">
         <ChangePassword />
-        <div className="h-[600px]">
+        <div>
           <AttachmentDisplay />
           {hasAttach === false ? <UserAttachments /> : <div />}
         </div>
