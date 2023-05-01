@@ -183,3 +183,9 @@ export default function AllCars() {
     </div>
   );
 }
+
+const AllCars = () => {
+  return <div>AllCars</div>;
+};
+
+export default AllCars;
