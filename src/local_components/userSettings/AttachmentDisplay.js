@@ -12,7 +12,6 @@ const AttachmentDisplay = () => {
   const getAttachment = async (e) => {
     try {
       const email = localStorage.getItem("email");
-      console.log(email);
       const response = await fetch(
         "https://localhost:44396/api/Authentication/ViewAttachmentByID",
         {
@@ -22,20 +21,10 @@ const AttachmentDisplay = () => {
         }
       );
       const result = await response.json();
-      console.log(result);
 
       if (result.data.length === 0) {
         //Handeled error
-        toast.error("No user Attachment found", {
-          position: "bottom-left",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        console.log("no attachment data found");
       } else if (result.data[0].status === "SUCCESS") {
         console.log("success");
         //set attachment
@@ -73,7 +62,6 @@ const AttachmentDisplay = () => {
   const fetchData = async () => {
     await getAttachment();
     if (foundAttachment) {
-      console.log(attachment);
       const image = await base64ToImage(attachment);
       setImageUrl(image);
     }
