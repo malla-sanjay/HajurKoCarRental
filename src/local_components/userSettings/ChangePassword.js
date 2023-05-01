@@ -147,14 +147,14 @@ const ChangePassword = () => {
         theme="light"
       />
 
-      <div className="bg-gray-400 w-0.35 h-96 "></div>
+      <div className="bg-gray-400 "></div>
       <form className=" p-12 py-0 w-2/5 update account h-4/5 flex flex-col">
-        <h1 className=" text-2xl font-semibold mb-6">Change Password</h1>
+        <h1 className=" text-4xl font-semibold mb-6">Change Password</h1>
         <label htmlFor="current_password:" className="text-xl font-normal mb-3">
           Current Password
         </label>
         <input
-          className="text-xl p-2 bg-purple-100"
+          className="text-2xl p-2 bg-purple-100"
           type="password"
           name="current_password"
           id="current_password"
@@ -162,11 +162,11 @@ const ChangePassword = () => {
           onChange={(e) => onChangePasswordForm(e)}
           placeholder="Enter Current Password"
         />
-        <label htmlFor="newPassword" className="text-xl font-normal mb-3">
+        <label htmlFor="newPassword" className="text-2xl font-normal mb-3">
           New Password
         </label>
         <input
-          className="text-xl p-2 bg-purple-100"
+          className="text-2xl p-2 bg-purple-100"
           type="password"
           name="newPassword"
           id="newPassword"
@@ -174,11 +174,11 @@ const ChangePassword = () => {
           onChange={(e) => onChangePasswordForm(e)}
           placeholder="New password here"
         />
-        <label htmlFor="confirm_password" className="text-xl font-normal mb-3">
+        <label htmlFor="confirm_password" className="text-2xl font-normal mb-3">
           Confirm
         </label>
         <input
-          className="text-xl p-2 bg-purple-100"
+          className="text-2xl p-2 bg-purple-100"
           type="password"
           name="confirm_password"
           id="confirm_password"
@@ -189,7 +189,7 @@ const ChangePassword = () => {
         <button
           type="button"
           onClick={onSubmitPasswordForm}
-          className="w-full px-3 py-4 mt-6 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none"
+          className="w-full text-2xl px-3 py-4 mt-6 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none"
         >
           Change Password
         </button>
