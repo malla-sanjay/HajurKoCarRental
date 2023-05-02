@@ -38,7 +38,6 @@ export default function AllRentalHistory() {
           <h1 class="ml-10 text-4xl font-bold text-gray-800 mt-8 mb-4 mr-4">
              Rental History
           </h1>
-
           <div class="flex items-center mr-10 ml-10">
             <form class="flex items-center" role="search">
               <input
