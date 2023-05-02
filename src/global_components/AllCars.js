@@ -23,6 +23,7 @@ export default function AllCars() {
   const [cars, setCars] = React.useState([{}]);
   const user_ID = "FEAAF683-E3D9-478C-8999-31B068C37980";
   const body = { user_ID };
+  const [currentRole, setCurrentRole] = React.useState(null);
 
   const loadCars = async () => {
     try {
@@ -144,47 +145,60 @@ export default function AllCars() {
 
   const handleRequest = async (carID) => {
     try {
-      const userID = localStorage.getItem("userID");
-      const requestedDate = getCurrentDate();
+      if (currentRole === null) {
+        toast.error("Please login to make rent requests", {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        const userID = localStorage.getItem("userID");
+        const requestedDate = getCurrentDate();
 
-      console.log(carID);
-      console.log(userID);
-      console.log(requestedDate);
+        console.log(carID);
+        console.log(userID);
+        console.log(requestedDate);
 
-      const result = await fetch(
-        "https://localhost:44396/api/Authentication/CreateApprovalRequest",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ carID, userID, requestedDate }),
+        const result = await fetch(
+          "https://localhost:44396/api/Authentication/CreateApprovalRequest",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ carID, userID, requestedDate }),
+          }
+        );
+        const data = await result.json();
+        console.log;
+        console.log(data);
+
+        if (data.data.length === 0) {
+          toast.error("Could not request the car", {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else if (data.data[0].status === "SUCCESS") {
+          toast.success("Request made successfully", {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         }
-      );
-      const data = await result.json();
-      console.log;
-      console.log(data);
-
-      if (data.data.length === 0) {
-        toast.error("Could not request the car", {
-          position: "bottom-left",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else if (data.data[0].status === "SUCCESS") {
-        toast.success("Request made successfully", {
-          position: "bottom-left",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
       }
     } catch (err) {
       console.log(err);
@@ -203,6 +217,8 @@ export default function AllCars() {
 
   React.useEffect(() => {
     loadCars();
+    const role = localStorage.getItem("role");
+    setCurrentRole(role);
   }, []);
   return (
     <div>
@@ -222,7 +238,9 @@ export default function AllCars() {
         <CssBaseline />
         <main>
           <div style={{ margin: 20, padding: 20 }} maxWidth="md">
-            <h1 className="text-3xl font-bold mb-5">OUR AVAILABLE CARS</h1>
+            <h1 class="ml-10 text-4xl font-bold text-gray-800  mb-4 mr-4">
+              Our Available Cars
+            </h1>
             <Grid container spacing={4}>
               {renderCards()}
             </Grid>

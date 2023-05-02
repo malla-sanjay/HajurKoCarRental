@@ -3,6 +3,7 @@ import { Card, CardContent, Chip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
+import Navibar from "@/global_components/Navibar";
 
 export default function Notification() {
   const [notifications, setNotifications] = React.useState([{}]);
@@ -22,6 +23,7 @@ export default function Notification() {
       );
       const data = await result.json();
       setNotifications(data.data);
+      console.log(data.data);
     } catch (err) {
       console.log(err);
     }
@@ -33,16 +35,17 @@ export default function Notification() {
 
   return (
     <>
+      <Navibar />
       <div class="flex justify-center items-center h-screen">
         <div class="w-full max-w-md">
           <div class="shadow-lg rounded-lg bg-white">
             <div class="px-6 py-4">
               <h2 class="text-2xl font-semibold text-center mb-4">
-                Notification
+                Notifications
               </h2>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {notifications.map((notification, index) => (
-                  <div class="flex flex-col items-start">
+                  <div class="flex flex-col items-start" key={index}>
                     <p class="text-sm font-semibold mb-1">
                       Name: {notification.userName}
                     </p>

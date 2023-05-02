@@ -32,9 +32,10 @@ export default function DamageLogByID() {
   return (
     <>
       <div>
+        <Navibar />
         <div>
           <h1 class="ml-10 text-4xl font-bold text-gray-800 mt-8 mb-4 mr-4">
-             Damage Logs By ID
+            Damage Logs By ID
           </h1>
           <div class="flex items-center mr-10 ml-10">
             <form class="flex items-center" role="search">
@@ -71,13 +72,15 @@ export default function DamageLogByID() {
                         : damages.userName.toLowerCase().includes(search);
                     })
                     .map((damage, index) => (
-                      <tr class="hover:bg-gray-100">
+                      <tr class="hover:bg-gray-100" key={damage.damageLogID}>
                         <td class="px-4 py-3 border">{index + 1}</td>
                         <td class="px-4 py-3 border">{damage.damageLogID}</td>
                         <td class="px-4 py-3 border">{damage.userName}</td>
                         <td class="px-4 py-3 border">{damage.carName}</td>
                         <td class="px-4 py-3 border">{damage.paymentFees}</td>
-                        <td class="px-4 py-3 border">{damage.payed ? "Paid" : "Not Paid"}</td>
+                        <td class="px-4 py-3 border">
+                          {damage.payed ? "Paid" : "Not Paid"}
+                        </td>
                         <td class="px-4 py-3 border">
                           <AppRegistrationRoundedIcon
                             fontSize="medium"

@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 const Navibar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [logged, setLogged] = useState(false);
+  const [currentRole, setCurrentRole] = useState("customer");
   const router = useRouter();
 
   function handleButtonClick() {
@@ -71,13 +72,129 @@ const Navibar = () => {
         </button>
       );
     } else {
-      return <div></div>;
+      return <div />;
+    }
+  };
+
+  const renderUser = () => {
+    if (logged) {
+      return (
+        <div className="relative ml-3">
+          <div>
+            <button
+              type="button"
+              className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              id="user-menu-button"
+              aria-haspopup="true"
+              aria-expanded={isOpen}
+              onClick={handleButtonClick}
+            >
+              <span className="sr-only">User Profile</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M12 2c3.866 0 7 3.134 7 7 0 3.866-3.134 7-7 7s-7-3.134-7-7c0-3.866 3.134-7 7-7zM19.652 21.23c-.476-2.032-2.53-3.54-4.982-3.54h-.336c-2.451 0-4.506 1.508-4.982 3.54-.05.214-.079.436-.079.67v.83c0 .553.448 1 1 1h12c.552 0 1-.447 1-1v-.83c0-.234-.029-.456-.079-.67z"
+                />
+              </svg>
+            </button>
+          </div>
+          {isOpen && (
+            <div
+              className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="user-menu-button"
+              tabindex="-1"
+              style={{ maxHeight: "200px" }}
+            >
+              {currentRole === "admin" ? (
+                <div />
+              ) : (
+                <Link
+                  href="/RentByID"
+                  className="block px-4 py-2 text-sm text-gray-700"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="user-menu-item-0"
+                >
+                  Your Profile
+                </Link>
+              )}
+
+              <Link
+                href="/userSettings"
+                className="block px-4 py-2 text-sm text-gray-700"
+                role="menuitem"
+                tabindex="-1"
+                id="user-menu-item-1"
+              >
+                Settings
+              </Link>
+              <Link
+                href="#"
+                className="block px-4 py-2 text-sm text-gray-700"
+                role="menuitem"
+                tabindex="-1"
+                id="user-menu-item-2"
+                onClick={logout}
+              >
+                Sign out
+              </Link>
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      return <div />;
+    }
+  };
+
+  const renderNotification = () => {
+    if (logged) {
+      return (
+        <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <button
+            type="button"
+            className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+          >
+            <span className="sr-only">View notifications</span>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+              />
+            </svg>
+          </button>
+        </div>
+      );
+    } else {
+      return <div />;
     }
   };
 
   useEffect(() => {
+    //checking and setting logged in status
     if (localStorage.getItem("email") === null) {
       setLogged(false);
+      //setting user role for logged in
+      const role = localStorage.getItem("role");
+      setCurrentRole(role);
     } else {
       setLogged(true);
     }
@@ -134,133 +251,67 @@ const Navibar = () => {
               </div>
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
-                  <Link
-                    href="/"
-                    className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
-                    aria-current="page"
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    href="/AllRentalHistory"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                  >
-                    Rental History
-                  </Link>
-                  <Link
-                    href="/userSettings"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                  >
-                    Settings
-                  </Link>
-                  <Link
-                    aria-disabled
-                    href="/userSettingsAdmin"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                  >
-                    User Settings
-                  </Link>
-                  <Link
-                    aria-disabled
-                    href="/manageCars"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                  >
-                    Manage Cars
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <button
-                type="button"
-                className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              >
-                <span className="sr-only">View notifications</span>
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                  />
-                </svg>
-              </button>
-              {renderLogin()}
+                  {currentRole === "admin" ? (
+                    <div />
+                  ) : (
+                    <Link
+                      href="/"
+                      className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                      aria-current="page"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
 
-              <div className="relative ml-3">
-                <div>
-                  <button
-                    type="button"
-                    className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    id="user-menu-button"
-                    aria-haspopup="true"
-                    aria-expanded={isOpen}
-                    onClick={handleButtonClick}
-                  >
-                    <span className="sr-only">User Profile</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="M12 2c3.866 0 7 3.134 7 7 0 3.866-3.134 7-7 7s-7-3.134-7-7c0-3.866 3.134-7 7-7zM19.652 21.23c-.476-2.032-2.53-3.54-4.982-3.54h-.336c-2.451 0-4.506 1.508-4.982 3.54-.05.214-.079.436-.079.67v.83c0 .553.448 1 1 1h12c.552 0 1-.447 1-1v-.83c0-.234-.029-.456-.079-.67z"
-                      />
-                    </svg>
-                  </button>
+                  {currentRole === !"customer" ? (
+                    <div>
+                      <Link
+                        href="/AllRentalHistory"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                      >
+                        Approval Requests
+                      </Link>
+
+                      <Link
+                        href="/AllRentalHistory"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                      >
+                        Rental History
+                      </Link>
+                      <Link
+                        aria-disabled
+                        href="/manageCars"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                      >
+                        Manage Cars
+                      </Link>
+                      <Link
+                        href="/userSettings"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                      >
+                        Damage Log
+                      </Link>
+                      {currentRole === "admin" ? (
+                        <Link
+                          aria-disabled
+                          href="/userSettingsAdmin"
+                          className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                        >
+                          User Settings
+                        </Link>
+                      ) : (
+                        <div />
+                      )}
+                    </div>
+                  ) : (
+                    <div />
+                  )}
                 </div>
-                {isOpen && (
-                  <div
-                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                    tabindex="-1"
-                    style={{ maxHeight: "200px" }}
-                  >
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-0"
-                    >
-                      Your Profile
-                    </a>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-1"
-                    >
-                      Your History
-                    </a>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-2"
-                      onClick={logout}
-                    >
-                      Sign out
-                    </a>
-                  </div>
-                )}
               </div>
             </div>
+            {renderNotification()}
+            {renderLogin()}
+            {renderUser()}
           </div>
         </div>
         <div className="sm:hidden" id="mobile-menu">

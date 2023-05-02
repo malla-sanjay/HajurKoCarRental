@@ -4,11 +4,8 @@ import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
 
-export default function CardDamageLogByID() {
+export default function CardDamageLogByID({ userID }) {
   const [damages, setDamages] = React.useState([{}]);
-  const [search, setSearch] = React.useState("");
-  const userID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
-  const body = { userID };
 
   const loadDamages = async () => {
     try {
@@ -17,7 +14,7 @@ export default function CardDamageLogByID() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
+          body: JSON.stringify({ userID }),
         }
       );
       const data = await result.json();
@@ -34,7 +31,7 @@ export default function CardDamageLogByID() {
     <>
       <Grid
         container
-        height="100vh"
+        height="50vh"
         spacing={4}
         justifyContent="center"
         alignItems="center"
