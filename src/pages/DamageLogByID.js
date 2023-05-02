@@ -3,7 +3,7 @@ import Navibar from "@/global_components/Navibar";
 import AppRegistrationRoundedIcon from "@mui/icons-material/AppRegistrationRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function AllApprovalRequest() {
+export default function DamageLogByID() {
   const [damages, setDamages] = React.useState([{}]);
   const [search, setSearch] = React.useState("");
   const userID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
@@ -31,13 +31,11 @@ export default function AllApprovalRequest() {
 
   return (
     <>
-      <Navibar> </Navibar>
       <div>
         <div>
           <h1 class="ml-10 text-4xl font-bold text-gray-800 mt-8 mb-4 mr-4">
-             Damage Logs
+             Damage Logs By ID
           </h1>
-
           <div class="flex items-center mr-10 ml-10">
             <form class="flex items-center" role="search">
               <input
