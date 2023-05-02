@@ -85,6 +85,7 @@ export default function AllRentalHistory() {
                       <td class="px-4 py-3 border">{rental.approver}</td>
                       <td class="px-4 py-3 border">{rental.returnStatusName}</td>
                       <td class="px-4 py-3 border">{rental.payment}</td>
+
                       <td class="px-4 py-3 border">
                         <AppRegistrationRoundedIcon
                           fontSize="medium"

@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 export default function AllApprovalRequest() {
   const [approvals, setApprovals] = React.useState([{}]);
   const [search, setSearch] = React.useState("");
+
   const userID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
   const body = { userID };
 
@@ -28,7 +29,6 @@ export default function AllApprovalRequest() {
   React.useEffect(() => {
     loadApprovals();
   }, []);
-
   return (
     <>
       <Navibar> </Navibar>
@@ -50,6 +50,7 @@ export default function AllApprovalRequest() {
             </form>
           </div>
         </div>
+
         <div className="container">
           <div class="py-4  ml-10">
             <div class="overflow-x-auto">
