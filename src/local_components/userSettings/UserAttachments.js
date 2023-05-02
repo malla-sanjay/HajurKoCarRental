@@ -38,7 +38,6 @@ const UserAttachments = () => {
     console.log(imageBinary);
     try {
       if (imageBinary === null) {
-        console.log("if");
         toast.error("Add an Attachment first", {
           position: "bottom-left",
           autoClose: 3000,
@@ -50,7 +49,6 @@ const UserAttachments = () => {
           theme: "light",
         });
       } else {
-        console.log("else");
         const email = localStorage.getItem("email");
         const body = { email, attachmentImage: imageBinary };
         console.log(body);

@@ -9,12 +9,13 @@ const ApproveRent = () => {
   const [refresh, setRefresh] = useState(false);
   const userID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
 
+  //delete approval request entry
+  //take the user id from approval request and add notification with denied message to the user
   const denyRequest = async (requestID) => {
-    //delete approval request entry
-    //take the user id from approval request and add notification with denied message to the user
     try {
+      console.log(requestID);
       const response = await fetch(
-        "'https://localhost:44396/api/Authentication/DeleteApprovalRequests'",
+        "https://localhost:44396/api/Authentication/DeleteApprovalRequests",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -26,7 +27,7 @@ const ApproveRent = () => {
 
       if (result.data.status === "Success") {
         console.log("success");
-        toast.success("Car Deleted Successfully", {
+        toast.success("Approval request removed", {
           position: "bottom-left",
           autoClose: 3000,
           hideProgressBar: false,
@@ -66,27 +67,62 @@ const ApproveRent = () => {
     }
   };
 
-  const approveRequest = async () => {
+  const approveRequest = async (requestID) => {
     //delete approver reqeust entry
     //create rent history
     //check if user has any 2 rent history with within 3 months
     //create payment history
     try {
       const response = await fetch(
-        "https://localhost:44396/api/Authentication/GetAllApprovalRequests",
+        "https://localhost:44396/api/Authentication/DeleteApprovalRequests",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userID }),
+          body: JSON.stringify({ requestID }),
         }
       );
-      const fetchData = await response.json();
-      const data = fetchData.data;
-      setUsers(data);
+      const result = await response.json();
+      console.log(result);
+      if (result.data[0].status === "Success") {
+        console.log("success");
+        toast.success("Approval request Accepted", {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setRefresh(!refresh);
+      } else {
+        //Unhandled error
+        toast.error("Unexpected ERROR!", {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     } catch (err) {
-      console.log(err);
+      //Expected server error
+      toast.error("SERVER ERROR!", {
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -113,11 +149,23 @@ const ApproveRent = () => {
 
   useEffect(() => {
     getApprovalRequests();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
       <Navibar />
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="justify-center flex overflow-auto m-10">
         <table className="table w-full border-collapse border border-gray-300">
           <thead>
@@ -141,7 +189,7 @@ const ApproveRent = () => {
                 <td className="px-4 py-3 border">
                   <button
                     className="px-3text-sm m rounded-sm mr-2 bg-emerald-600 text-white p-2"
-                    onClick={approveRequest}
+                    onClick={() => approveRequest(request.requestID)}
                   >
                     Approve Request
                   </button>

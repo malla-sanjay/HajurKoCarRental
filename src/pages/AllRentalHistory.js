@@ -34,9 +34,9 @@ export default function AllRentalHistory() {
     <>
       <Navibar />
       <div>
-      <div>
+        <div>
           <h1 class="ml-10 text-4xl font-bold text-gray-800 mt-8 mb-4 mr-4">
-             Rental History
+            Rental History
           </h1>
 
           <div class="flex items-center mr-10 ml-10">
@@ -52,7 +52,7 @@ export default function AllRentalHistory() {
           </div>
         </div>
         <div className="container">
-          <div class="py-4  ml-10">
+          <div class="py-4  mx-10">
             <div class="overflow-x-auto">
               <table class="table w-full border-collapse border border-gray-300">
                 <thead>
@@ -64,37 +64,39 @@ export default function AllRentalHistory() {
                     <th class="px-4 py-3">RequestDate</th>
                     <th class="px-4 py-3">Approver</th>
                     <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3">Ammount</th>                    
+                    <th class="px-4 py-3">Ammount</th>
                     <th class="px-4 py-3">Operations</th>
                   </tr>
                 </thead>
                 <tbody class="text-sm font-normal text-gray-700">
                   {rentals
-                  .filter((rentals) => {
-                    return search.toLowerCase() === ""
-                      ? rentals
-                      : rentals.userName.toLowerCase().includes(search);
-                  })
-                  .map((rental, index) => (
-                    <tr class="hover:bg-gray-100" key={rental.rentID}>
-                      <td class="px-4 py-3 border">{index + 1}</td>
-                      <td class="px-4 py-3 border">{rental.rentID}</td>
-                      <td class="px-4 py-3 border">{rental.carModel}</td>
-                      <td class="px-4 py-3 border">{rental.userName}</td>
-                      <td class="px-4 py-3 border">{rental.requestDate}</td>
-                      <td class="px-4 py-3 border">{rental.approver}</td>
-                      <td class="px-4 py-3 border">{rental.returnStatusName}</td>
-                      <td class="px-4 py-3 border">{rental.payment}</td>
+                    .filter((rentals) => {
+                      return search.toLowerCase() === ""
+                        ? rentals
+                        : rentals.userName.toLowerCase().includes(search);
+                    })
+                    .map((rental, index) => (
+                      <tr class="hover:bg-gray-100" key={rental.rentID}>
+                        <td class="px-4 py-3 border">{index + 1}</td>
+                        <td class="px-4 py-3 border">{rental.rentID}</td>
+                        <td class="px-4 py-3 border">{rental.carModel}</td>
+                        <td class="px-4 py-3 border">{rental.userName}</td>
+                        <td class="px-4 py-3 border">{rental.requestDate}</td>
+                        <td class="px-4 py-3 border">{rental.approver}</td>
+                        <td class="px-4 py-3 border">
+                          {rental.returnStatusName}
+                        </td>
+                        <td class="px-4 py-3 border">{rental.payment}</td>
 
-                      <td class="px-4 py-3 border">
-                        <AppRegistrationRoundedIcon
-                          fontSize="medium"
-                          color="primary"
-                        />
-                        <DeleteIcon />
-                      </td>
-                    </tr>
-                  ))}
+                        <td class="px-4 py-3 border">
+                          <AppRegistrationRoundedIcon
+                            fontSize="medium"
+                            color="primary"
+                          />
+                          <DeleteIcon />
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

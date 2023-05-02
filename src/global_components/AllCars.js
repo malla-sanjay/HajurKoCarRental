@@ -14,9 +14,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from "react";
 
 export default function AllCars() {
-  const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const theme = createTheme();
   const [cars, setCars] = React.useState([{}]);
   const user_ID = "FEAAF683-E3D9-478C-8999-31B068C37980";
@@ -108,6 +110,7 @@ export default function AllCars() {
                     borderRadius: 20,
                     marginBottom: 10,
                   }}
+                  onClick={() => handleRequest(car.car_ID)}
                 >
                   Add Request
                 </Button>
@@ -122,12 +125,99 @@ export default function AllCars() {
     }
   };
 
+  function getCurrentDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let daye = today.getDate();
+
+    if (month < 10) {
+      month = `0${month}`;
+    }
+
+    if (daye < 10) {
+      daye = `0${daye}`;
+    }
+
+    return `${year}-${month}-${daye}`;
+  }
+
+  const handleRequest = async (carID) => {
+    try {
+      const userID = localStorage.getItem("userID");
+      const requestedDate = getCurrentDate();
+
+      console.log(carID);
+      console.log(userID);
+      console.log(requestedDate);
+
+      const result = await fetch(
+        "https://localhost:44396/api/Authentication/CreateApprovalRequest",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ carID, userID, requestedDate }),
+        }
+      );
+      const data = await result.json();
+      console.log;
+      console.log(data);
+
+      if (data.data.length === 0) {
+        toast.error("Could not request the car", {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else if (data.data[0].status === "SUCCESS") {
+        toast.success("Request made successfully", {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Server Error", {
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   React.useEffect(() => {
     loadCars();
-    console.log(loadCars());
   }, []);
   return (
     <div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <main>
