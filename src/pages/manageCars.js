@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import CarCard from "@/local_components/manageCars/CarCard";
 import { Refresh } from "@mui/icons-material";
+import AddCarModal from "@/local_components/manageCars/AddCarModal";
 
 const userSettingsAdmin = () => {
   const [cars, setCars] = useState([{}]);
@@ -29,7 +30,6 @@ const userSettingsAdmin = () => {
       const fetchData = await response.json();
       const data = fetchData.data;
       setCars(data);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -73,15 +73,7 @@ const userSettingsAdmin = () => {
 
   return (
     <>
-      {!modal ? (
-        <UpdateUserModal
-          userEmail={editUserEmail}
-          userRole={editUserRole}
-          closeModal={closeModal}
-        />
-      ) : (
-        <div />
-      )}
+      {!modal ? <AddCarModal closeModal={closeModal} /> : <div />}
       <Navibar />
       <ToastContainer
         position="bottom-left"
@@ -99,7 +91,7 @@ const userSettingsAdmin = () => {
         <button
           className="bg p-2 m-2 mr-5 pr-4  font-semibold text-xl rounded-lg bg-emerald-500 transition-colors duration-200 ease-in-out hover:bg-emerald-600 active:bg-emerald-400focus:outline-none"
           onClick={() => {
-            handleAddButton;
+            handleAddButton();
           }}
         >
           + Add Car
