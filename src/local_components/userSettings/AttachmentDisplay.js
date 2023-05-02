@@ -85,11 +85,11 @@ const AttachmentDisplay = () => {
       );
     } else {
       return (
-        <div className="bg-gray-800 p-5 h-96 rounded-lg">
+        <div className="bg-gray-800 p-5 rounded-lg">
           <h1 className="text-4xl mb-10 font-semibold text-white">
             Your Liscence Paper
           </h1>
-          <div className=" flex justify-center">
+          <div className=" flex justify-center overflow-auto">
             <img src={imageUrl.src} alt="attachment" />
           </div>
         </div>

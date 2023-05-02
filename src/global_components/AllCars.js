@@ -12,20 +12,18 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const theme = createTheme();
-
 export default function AllCars() {
+  const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const theme = createTheme();
   const [cars, setCars] = React.useState([{}]);
   const user_ID = "FEAAF683-E3D9-478C-8999-31B068C37980";
   const body = { user_ID };
 
   const loadCars = async () => {
-    try{
+    try {
       const result = await fetch(
         "https://localhost:44396/api/Authentication/GetAllCars",
         {
@@ -35,15 +33,13 @@ export default function AllCars() {
         }
       );
       const data = await result.json();
-  
-          setCars(data.data);
-          console.log(data.data)
-    
+
+      setCars(data.data);
+      console.log(data.data);
+    } catch (err) {
+      console.log(err);
     }
-    catch(err){
-      console.log(err)
-    }
-   };
+  };
 
   React.useEffect(() => {
     loadCars();
@@ -80,9 +76,7 @@ export default function AllCars() {
             <Grid container spacing={4}>
               {/* {packages.map((spackage, index) => ( */}
               {cars.map((car, index) => (
-                <Grid item 
-                key={car.car_ID}
-                 xs={12} sm={6} md={4}>
+                <Grid item key={car.car_ID} xs={12} sm={6} md={4}>
                   <Card
                     sx={{
                       display: "flex",
@@ -91,15 +85,13 @@ export default function AllCars() {
                     }}
                     style={{ boxShadow: "2px 3px 10px #888888" }}
                   >
-                    <div style={{display:"flex", justifyContent:"center"}}> 
-                    <CardMedia
-                      component="img"
-                
-                     style={{height:"150px", width:"150px"}}
-                      src={`data:image/png;base64,${car.car_Image}`}
-
-                      alt="random"
-                    />
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <CardMedia
+                        component="img"
+                        style={{ height: "150px", width: "150px" }}
+                        src={`data:image/png;base64,${car.car_Image}`}
+                        alt="random"
+                      />
                     </div>
                     <CardContent sx={{ flexGrow: 2 }}>
                       <Stack direction="row" spacing={3} marginBottom={2}>
@@ -149,9 +141,7 @@ export default function AllCars() {
                       <Button
                         size="small"
                         variant="contained"
-                       
-                        
-                        style={{backgroundColor: "black", borderRadius: 20 }}
+                        style={{ backgroundColor: "black", borderRadius: 20 }}
                       >
                         Explore
                       </Button>
@@ -159,7 +149,7 @@ export default function AllCars() {
                     </CardActions>
                   </Card>
                 </Grid>
-              ))} 
+              ))}
             </Grid>
           </div>
         </main>

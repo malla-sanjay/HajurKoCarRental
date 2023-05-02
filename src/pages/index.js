@@ -8,9 +8,8 @@ import AllRentalHistory from "@/pages/AllRentalHistory";
 export default function Home() {
   return (
     <>
-      <Navibar> </Navibar>
-      <AllCars></AllCars>
-      <div>Index page</div>
+      <Navibar />
+      <AllCars />
     </>
   );
 }

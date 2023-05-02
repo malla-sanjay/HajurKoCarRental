@@ -6,8 +6,10 @@ const userSettings = () => {
   var attachExist = false;
   return (
     <>
-      <Navibar />
-      <UserSettings />
+      <div>
+        <Navibar />
+        <UserSettings />
+      </div>
     </>
   );
 };

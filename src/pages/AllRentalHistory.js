@@ -5,7 +5,6 @@ import Navibar from "@/global_components/Navibar";
 
 export default function AllRentalHistory() {
   const [rentals, setRentals] = React.useState([{}]);
-
   const UserID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
   const body = { UserID };
 
@@ -32,9 +31,8 @@ export default function AllRentalHistory() {
 
   return (
     <>
-    <Navibar> </Navibar>
+      <Navibar />
       <div>
-
         <div className="container">
           <div class="py-4  ml-10">
             <div class="overflow-x-auto">
@@ -53,7 +51,7 @@ export default function AllRentalHistory() {
                 </thead>
                 <tbody class="text-sm font-normal text-gray-700">
                   {rentals.map((rental, index) => (
-                    <tr class="hover:bg-gray-100">
+                    <tr class="hover:bg-gray-100" key={rental.rentID}>
                       <td class="px-4 py-3 border">{index + 1}</td>
                       <td class="px-4 py-3 border">{rental.rentID}</td>
                       <td class="px-4 py-3 border">{rental.carModel}</td>
@@ -62,8 +60,11 @@ export default function AllRentalHistory() {
                       <td class="px-4 py-3 border">{rental.approver}</td>
                       <td class="px-4 py-3 border">{rental.returnStatusName}</td>
                       <td class="px-4 py-3 border">
-                      <AppRegistrationRoundedIcon fontSize="medium" color="primary"/>
-                      <DeleteIcon />
+                        <AppRegistrationRoundedIcon
+                          fontSize="medium"
+                          color="primary"
+                        />
+                        <DeleteIcon />
                       </td>
                     </tr>
                   ))}
