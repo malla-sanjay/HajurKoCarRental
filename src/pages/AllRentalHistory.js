@@ -5,6 +5,7 @@ import Navibar from "@/global_components/Navibar";
 
 export default function AllRentalHistory() {
   const [rentals, setRentals] = React.useState([{}]);
+  const [search, setSearch] = React.useState("");
   const UserID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
   const body = { UserID };
 
@@ -33,6 +34,23 @@ export default function AllRentalHistory() {
     <>
       <Navibar />
       <div>
+      <div>
+          <h1 class="ml-10 text-4xl font-bold text-gray-800 mt-8 mb-4 mr-4">
+             Rental History
+          </h1>
+
+          <div class="flex items-center mr-10 ml-10">
+            <form class="flex items-center" role="search">
+              <input
+                class="form-input h-12 w-72 px-2 rounded-md border border-gray-300 focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                type="search"
+                placeholder="Search by Name"
+                aria-label="Search"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </form>
+          </div>
+        </div>
         <div className="container">
           <div class="py-4  ml-10">
             <div class="overflow-x-auto">
@@ -45,12 +63,19 @@ export default function AllRentalHistory() {
                     <th class="px-4 py-3">Rented By</th>
                     <th class="px-4 py-3">RequestDate</th>
                     <th class="px-4 py-3">Approver</th>
-                    <th class="px-4 py-3">Status</th>                    
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3">Ammount</th>                    
                     <th class="px-4 py-3">Operations</th>
                   </tr>
                 </thead>
                 <tbody class="text-sm font-normal text-gray-700">
-                  {rentals.map((rental, index) => (
+                  {rentals
+                  .filter((rentals) => {
+                    return search.toLowerCase() === ""
+                      ? rentals
+                      : rentals.userName.toLowerCase().includes(search);
+                  })
+                  .map((rental, index) => (
                     <tr class="hover:bg-gray-100" key={rental.rentID}>
                       <td class="px-4 py-3 border">{index + 1}</td>
                       <td class="px-4 py-3 border">{rental.rentID}</td>
@@ -59,6 +84,7 @@ export default function AllRentalHistory() {
                       <td class="px-4 py-3 border">{rental.requestDate}</td>
                       <td class="px-4 py-3 border">{rental.approver}</td>
                       <td class="px-4 py-3 border">{rental.returnStatusName}</td>
+                      <td class="px-4 py-3 border">{rental.payment}</td>
                       <td class="px-4 py-3 border">
                         <AppRegistrationRoundedIcon
                           fontSize="medium"
