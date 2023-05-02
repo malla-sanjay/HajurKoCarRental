@@ -165,7 +165,7 @@ const AddCarModal = ({ closeModal }) => {
                 name="car_Model"
                 value={carDetails.car_Model}
                 onChange={(e) => onChange(e)}
-                placeholder="User Name"
+                placeholder="Name Of Car"
               />
             </div>
 
@@ -182,7 +182,7 @@ const AddCarModal = ({ closeModal }) => {
                 name="car_Company"
                 value={carDetails.car_Company}
                 onChange={(e) => onChange(e)}
-                placeholder="Contact No"
+                placeholder="Company"
               />
             </div>
 
@@ -199,7 +199,7 @@ const AddCarModal = ({ closeModal }) => {
                 name="description"
                 value={carDetails.description}
                 onChange={(e) => onChange(e)}
-                placeholder="Address"
+                placeholder="Description"
               />
             </div>
 

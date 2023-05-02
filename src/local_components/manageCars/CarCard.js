@@ -97,7 +97,7 @@ const CarCard = ({
           </div>
         </div>
         <div className="m-2 flex justify-center rounded-lg">
-          <Image src={imageUrl.src} alt="Car" height={140} width={200} />
+          <Image src={imageUrl.src} alt="Car" height={180} width={420} />
         </div>
         <div className="text-zinc-200 font-semibold text-xl  mt-1 mb-1">
           {car_Year}
