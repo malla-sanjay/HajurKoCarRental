@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const UpdateUserModal = ({ userEmail, closeModal }) => {
+const UpdateUserModal = ({ userEmail, userRole, closeModal }) => {
   const userRoles = ["customer", "staff"];
   const [password, setPassword] = useState("");
 
@@ -13,11 +13,12 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
     email: "",
     contact_No: "",
     address: "",
-    roleName: "",
+    roleName: userRole,
   });
 
   //get the data of user by ID
   const getUserDetails = async () => {
+    console.log(userEmail);
     try {
       const response = await fetch(
         "https://localhost:44396/api/Authentication/GetUserById",
@@ -26,18 +27,16 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userEmail }),
+          body: JSON.stringify({ email: userEmail }),
         }
       );
       const fetchData = await response.json();
-
       //set the data of on update user
       setUserDetails({
-        full_Name: fetchData.data.fullName,
-        email: fetchData.data.email,
-        contact_No: fetchData.data.contactNo,
-        address: fetchData.data.address,
-        roleName: fetchData.data.userRole,
+        full_Name: fetchData.data[0].fullName,
+        email: fetchData.data[0].email,
+        contact_No: fetchData.data[0].contactNo,
+        address: fetchData.data[0].address,
       });
     } catch (err) {
       console.log(err);
@@ -46,19 +45,22 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
 
   const handleUpdate = async () => {
     try {
+      console.log(userDetails);
       //update api here
       const response = await fetch(
         "https://localhost:44396/api/Authentication/AdminUpdateUsers",
         {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userDetails }),
+          body: JSON.stringify(userDetails),
         }
       );
-
       const result = await response.json();
+      console.log(result);
+
+      console.log(result);
       if (result.status === 400) {
         toast.error("Could not update user", {
           position: "bottom-left",
@@ -122,9 +124,11 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ userEmail, password }),
+            body: JSON.stringify({ email: userEmail, newPassword: password }),
           }
         );
+
+        console.log(response);
 
         const changeResult = await response.json();
         if ((changeResult.data.status = "SUCCESS")) {
@@ -183,7 +187,7 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
 
   const handleCancel = () => {
     console.log(userDetails);
-    closeModal();
+    closeModal(true);
   };
 
   const onChange = (e) => {
@@ -194,11 +198,11 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
   };
 
   const onChangePasswordForm = (e) => {
-    setPasswords(e.target.value);
+    setPassword(e.target.value);
   };
 
   useEffect(() => {
-    //get user details by id
+    getUserDetails();
   }, []);
 
   return (
@@ -206,53 +210,64 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
       isOpen={true}
       onRequestClose={closeModal}
       contentLabel="Add Class Modal"
-      style={customStyles}
     >
-      <div>
-        <form className=" flex pt-10 ml-52 mr-52 flex-col">
-          <h2 className="text-2xl font-semibold mb-2">Change User Password</h2>
-          <div className="flex flex-wrap justify-between">
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <div className="overflow-auto mt-10 flex-col  ">
+        <form className=" flex pt-10 ml-52 mr-52 flex-col bg-slate-100 rounded-xl p-10 ">
+          <h2 className="text-2xl font-semibold mb-2 ">Change User Password</h2>
+          <div className="flex flex-col justify-between align-middle">
             <div className="w-1/2 p-4 flex flex-col">
               <label htmlFor="full_name" className="text-xl font-semibold mb-2">
-                Full Name
+                Reset User Password
               </label>
               <input
-                className="text-2xl p-2 bg-purple-100"
+                className="text-xl p-2 bg-purple-100"
                 type="text"
-                name="full_name"
-                value={userDetails.full_Name}
-                onChange={(e) => onChange(e)}
-                placeholder="User Name"
+                name="password"
+                value={userDetails.password}
+                onChange={(e) => onChangePasswordForm(e)}
+                placeholder="Enter new password here"
               />
             </div>
+            <button
+              type="button"
+              className="w-1/2 p-2 h-3/5 text-white bg-slate-700 rounded-md focus:bg-slate-800 focus:outline-none"
+              onClick={updatePassword}
+            >
+              Update
+            </button>
           </div>
-          <button
-            type="button"
-            className="w-full px-3 w-1/2 py-4 mt-6 mb-2 text-white bg-slate-700 rounded-md focus:bg-slate-800 focus:outline-none"
-            onClick={updatePassword}
-          >
-            Update
-          </button>
         </form>
 
-        <form className=" flex pt-10 ml-52 mr-52 flex-col">
+        <form className=" flex  mx-52 mt-10 mb-10 p-10 flex-col bg-amber-100 rounded-xl">
           <h2 className="text-2xl font-semibold mb-2">Update User</h2>
-          <div className="flex flex-wrap justify-between">
-            <div className="w-1/2 p-4 flex flex-col">
-              <label htmlFor="full_name" className="text-xl font-semibold mb-2">
+          <div className="flex flex-wrap justify-around">
+            <div className="w-5/12 p-4 flex flex-col">
+              <label htmlFor="full_Name" className="text-xl font-semibold mb-2">
                 Full Name
               </label>
               <input
-                className="text-2xl p-2 bg-purple-100"
+                className="text-xl p-2 bg-purple-100"
                 type="text"
-                name="full_name"
+                name="full_Name"
                 value={userDetails.full_Name}
                 onChange={(e) => onChange(e)}
                 placeholder="User Name"
               />
             </div>
 
-            <div className="w-1/2 p-4 flex flex-col">
+            <div className="w-5/12 p-4 flex flex-col">
               <label
                 htmlFor="contact_No"
                 className="text-xl font-semibold mb-2"
@@ -260,7 +275,7 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
                 Contact No
               </label>
               <input
-                className="text-2xl p-2 bg-purple-100"
+                className="text-xl p-2 bg-purple-100"
                 type="text"
                 name="contact_No"
                 value={userDetails.contact_No}
@@ -269,12 +284,12 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
               />
             </div>
 
-            <div className="w-1/2 p-4 flex flex-col">
+            <div className="w-5/12 p-4 flex flex-col">
               <label htmlFor="address" className="text-xl font-semibold mb-2">
                 Address
               </label>
               <input
-                className="text-2xl p-2 bg-purple-100"
+                className="text-xl p-2 bg-purple-100"
                 type="text"
                 name="address"
                 value={userDetails.address}
@@ -283,7 +298,7 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
               />
             </div>
 
-            <div className="w-1/3 p-4 flex flex-col">
+            <div className="w-5/12 p-4 flex flex-col">
               <label htmlFor="roleName" className="text-xl font-semibold mb-2">
                 Role Name
               </label>
@@ -305,17 +320,17 @@ const UpdateUserModal = ({ userEmail, closeModal }) => {
               </select>
             </div>
           </div>
-          <div>
+          <div className="flex justify-around">
             <button
               type="button"
-              className="w-full px-3 py-4 mt-6 mb-2 text-white bg-slate-700 rounded-md focus:bg-slate-800 focus:outline-none"
+              className="w-5/12 px-3 py-4 mt-6 mb-2  text-white bg-slate-700 rounded-md focus:bg-slate-800 focus:outline-none"
               onClick={handleUpdate}
             >
               Add
             </button>
             <button
               type="button"
-              className="w-full px-3 py-4 mt-6 mb-7 text-white bg-slate-700 rounded-md focus:bg-slate-800 focus:outline-none"
+              className="w-5/12 px-3 py-4 mt-6 mb-2 text-white bg-slate-700 rounded-md focus:bg-slate-800 focus:outline-none"
               onClick={handleCancel}
             >
               Cancel
