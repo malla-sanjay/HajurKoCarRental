@@ -4,16 +4,15 @@ import AppRegistrationRoundedIcon from "@mui/icons-material/AppRegistrationRound
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function AllApprovalRequest() {
-  const [approvals, setApprovals] = React.useState([{}]);
+  const [damages, setDamages] = React.useState([{}]);
   const [search, setSearch] = React.useState("");
-
   const userID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
   const body = { userID };
 
-  const loadApprovals = async () => {
+  const loadDamages = async () => {
     try {
       const result = await fetch(
-        "https://localhost:44396/api/Authentication/GetAllApprovalRequests",
+        "https://localhost:44396/api/Authentication/GetDamageLogByUserID",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -21,21 +20,22 @@ export default function AllApprovalRequest() {
         }
       );
       const data = await result.json();
-      setApprovals(data.data);
+      setDamages(data.data);
     } catch (err) {
       console.log(err);
     }
   };
   React.useEffect(() => {
-    loadApprovals();
+    loadDamages();
   }, []);
+
   return (
     <>
       <Navibar> </Navibar>
       <div>
         <div>
           <h1 class="ml-10 text-4xl font-bold text-gray-800 mt-8 mb-4 mr-4">
-             Approval Requests
+             Damage Logs
           </h1>
 
           <div class="flex items-center mr-10 ml-10">
@@ -50,7 +50,6 @@ export default function AllApprovalRequest() {
             </form>
           </div>
         </div>
-
         <div className="container">
           <div class="py-4  ml-10">
             <div class="overflow-x-auto">
@@ -58,29 +57,29 @@ export default function AllApprovalRequest() {
                 <thead>
                   <tr class="text-xs font-semibold tracking-wide text-left text-white bg-gray-800 uppercase border-b border-gray-300">
                     <th class="px-4 py-3">ID</th>
-                    <th class="px-4 py-3">RequestID</th>
-                    <th class="px-4 py-3">Requested By</th>
+                    <th class="px-4 py-3">DamageLog ID</th>
+                    <th class="px-4 py-3">Damaged By</th>
                     <th class="px-4 py-3">Car Model</th>
-                    <th class="px-4 py-3">RequestDate</th>
+                    <th class="px-4 py-3">Ammount</th>
+                    <th class="px-4 py-3">Status</th>
                     <th class="px-4 py-3">Operations</th>
                   </tr>
                 </thead>
                 <tbody class="text-sm font-normal text-gray-700">
-                  {approvals
-                    .filter((approvals) => {
+                  {damages
+                    .filter((damages) => {
                       return search.toLowerCase() === ""
-                        ? approvals
-                        : approvals.fullName.toLowerCase().includes(search);
+                        ? damages
+                        : damages.userName.toLowerCase().includes(search);
                     })
-                    .map((approval, index) => (
+                    .map((damage, index) => (
                       <tr class="hover:bg-gray-100">
                         <td class="px-4 py-3 border">{index + 1}</td>
-                        <td class="px-4 py-3 border">{approval.requestID}</td>
-                        <td class="px-4 py-3 border">{approval.fullName}</td>
-                        <td class="px-4 py-3 border">{approval.carModel}</td>
-                        <td class="px-4 py-3 border">
-                          {approval.requestedDate}
-                        </td>
+                        <td class="px-4 py-3 border">{damage.damageLogID}</td>
+                        <td class="px-4 py-3 border">{damage.userName}</td>
+                        <td class="px-4 py-3 border">{damage.carName}</td>
+                        <td class="px-4 py-3 border">{damage.paymentFees}</td>
+                        <td class="px-4 py-3 border">{damage.payed ? "Paid" : "Not Paid"}</td>
                         <td class="px-4 py-3 border">
                           <AppRegistrationRoundedIcon
                             fontSize="medium"
