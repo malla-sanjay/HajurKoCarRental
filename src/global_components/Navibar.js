@@ -197,6 +197,8 @@ const Navibar = () => {
       setCurrentRole(role);
     } else {
       setLogged(true);
+      const role = localStorage.getItem("role");
+      setCurrentRole(role);
     }
   });
 
@@ -251,7 +253,7 @@ const Navibar = () => {
               </div>
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
-                  {currentRole === "admin" ? (
+                  {currentRole == "admin" ? (
                     <div />
                   ) : (
                     <Link
@@ -263,10 +265,10 @@ const Navibar = () => {
                     </Link>
                   )}
 
-                  {currentRole === !"customer" ? (
-                    <div>
+                  {currentRole == "admin" || currentRole == "staff" ? (
+                    <div className="align-middle mt-1">
                       <Link
-                        href="/AllRentalHistory"
+                        href="/approveRent"
                         className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                       >
                         Approval Requests
@@ -286,7 +288,7 @@ const Navibar = () => {
                         Manage Cars
                       </Link>
                       <Link
-                        href="/userSettings"
+                        href="/DamageLogsByID"
                         className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                       >
                         Damage Log

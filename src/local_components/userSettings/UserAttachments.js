@@ -126,9 +126,9 @@ const UserAttachments = () => {
       <div>
         <label
           htmlFor="file-upload"
-          className="page-content text-2xl bg-white rounded-lg flex mt-10"
+          className="page-content text-2xl bg-white rounded-lg flex mt-2"
         >
-          Upload an image or PDF:
+          Upload Liscence Photo PNG/JPEG:
         </label>
         <input
           id="file-upload"

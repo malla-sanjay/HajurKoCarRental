@@ -8,7 +8,7 @@ import Navibar from "@/global_components/Navibar";
 export default function Notification() {
   const [notifications, setNotifications] = React.useState([{}]);
 
-  const userID = "BF286A29-6282-47B0-9B72-E452CE58A453";
+  const userID = "2697e68e-4f1d-44f4-9137-f7bd9bb0206f";
   const body = { userID };
 
   const loadNotifications = async () => {
@@ -47,7 +47,7 @@ export default function Notification() {
                 {notifications.map((notification, index) => (
                   <div class="flex flex-col items-start" key={index}>
                     <p class="text-sm font-semibold mb-1">
-                      Name: {notification.userName}
+                      For: {notification.userName}
                     </p>
                     <p class="text-sm font-semibold mb-1">
                       Approver: {notification.approverName}

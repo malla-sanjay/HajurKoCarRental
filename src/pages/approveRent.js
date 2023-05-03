@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 const ApproveRent = () => {
   const [approvalRequests, setApprovalRequests] = useState([{}]);
   const [refresh, setRefresh] = useState(false);
-  const userID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
+  const userID = "039c4697-1e79-4fbe-814d-d6333dc17dea";
 
   //delete approval request entry
   //take the user id from approval request and add notification with denied message to the user
@@ -25,7 +25,7 @@ const ApproveRent = () => {
       const result = await response.json();
       console.log(result);
 
-      if (result.data.status === "Success") {
+      if (result.data[0].status === "Success") {
         console.log("success");
         toast.success("Approval request removed", {
           position: "bottom-left",

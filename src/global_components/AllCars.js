@@ -36,7 +36,7 @@ export default function AllCars() {
         }
       );
       const data = await result.json();
-
+      console.log(cars);
       setCars(data.data);
       console.log(data.data);
     } catch (err) {
@@ -188,7 +188,7 @@ export default function AllCars() {
             theme: "light",
           });
         } else if (data.data[0].status === "SUCCESS") {
-          toast.success("Request made successfully", {
+          toast.success("Car Requested for Rent", {
             position: "bottom-left",
             autoClose: 3000,
             hideProgressBar: false,

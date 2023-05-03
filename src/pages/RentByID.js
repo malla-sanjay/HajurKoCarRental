@@ -84,11 +84,12 @@ export default function RentByID() {
                         </td>
                         <td class="px-4 py-3 border">{rental.payment}</td>
                         <td class="px-4 py-3 border">
-                          <AppRegistrationRoundedIcon
-                            fontSize="medium"
-                            color="primary"
-                          />
-                          <DeleteIcon />
+                          <button class=" ml-2 bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full">
+                            Request Damaged
+                          </button>
+                          <button class=" ml-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                            Cancel
+                          </button>
                           <button class=" ml-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full">
                             Make Payment
                           </button>
