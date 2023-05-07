@@ -4,13 +4,17 @@ import { useState, useEffect } from "react";
 import Navibar from "@/global_components/Navibar";
 import UpdateUserModal from "@/local_components/userSettingsAdmin/UpdateUserModal";
 import "react-toastify/dist/ReactToastify.css";
+import { Result } from "postcss";
+import { getActiveUser } from "@/utility";
+import { ErrorOutlineOutlined } from "@mui/icons-material";
 
 const userSettingsAdmin = () => {
   const [users, setUsers] = useState([{}]);
   const [modal, closeModal] = useState(true);
   const [editUserEmail, setEditUserEmail] = useState("");
   const [editUserRole, setEditUserRole] = useState("");
-  const user_ID = "922AF30D-F88C-45E7-8EC7-587C39E9BBBE";
+  const user_ID = "2697e68e-4f1d-44f4-9137-f7bd9bb0206f";
+  const [regularCustomer, setRegularCustomer] = useState([]);
 
   const fetchUsers = async () => {
     try {
@@ -42,8 +46,30 @@ const userSettingsAdmin = () => {
     closeModal(false);
   };
 
+  const getRegularUsers = async () => {
+    try {
+      const response = await fetch(
+        "https://localhost:44396/api/Authentication/GetAllRentHistory",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userID: user_ID }),
+        }
+      );
+
+      const result = await response.json();
+      const activeUsers = await getActiveUser(result.data);
+
+      setRegularCustomer(activeUsers);
+    } catch (err) {
+      console.log("error while fetching active users.");
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
+    getRegularUsers();
   }, [modal]);
 
   return (
@@ -64,6 +90,7 @@ const userSettingsAdmin = () => {
             <tr className="text-xs font-semibold tracking-wide text-left text-white bg-gray-800 uppercase border-b border-gray-300">
               <th className="px-4 py-3">SN</th>
               <th className="px-4 py-3">Full Name</th>
+              <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">Contact</th>
               <th className="px-4 py-3">Address</th>
@@ -76,6 +103,13 @@ const userSettingsAdmin = () => {
               <tr className="hover:bg-gray-100" key={user.email}>
                 <td className="px-4 py-3 border">{index + 1}</td>
                 <td className="px-4 py-3 border">{user.full_Name}</td>
+                <td class="px-4 py-3 border">
+                  {regularCustomer.includes(user.full_Name) ? (
+                    <div className="text-emerald-500">Regular</div>
+                  ) : (
+                    <div className="text-red-500">Non-Regular</div>
+                  )}
+                </td>
                 <td className="px-4 py-3 border">{user.email}</td>
                 <td className="px-4 py-3 border">{user.contact_No}</td>
                 <td className="px-4 py-3 border">{user.address}</td>

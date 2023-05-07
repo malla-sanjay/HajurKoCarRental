@@ -12,7 +12,7 @@ export default function AllRentalHistory() {
   const loadRentalHistory = async () => {
     try {
       const result = await fetch(
-        "https://localhost:44396/api/Authentication/GetRentHistoryByUserID",
+        "https://localhost:44396/api/Authentication/GetAllRentHistory",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -59,7 +59,6 @@ export default function AllRentalHistory() {
                   <tr class="text-xs font-semibold tracking-wide text-left text-white bg-gray-800 uppercase border-b border-gray-300">
                     <th class="px-4 py-3">ID</th>
                     <th class="px-4 py-3">RentID</th>
-                    <th class="px-4 py-3">Customer Status</th>
                     <th class="px-4 py-3">Car Model</th>
                     <th class="px-4 py-3">Rented By</th>
                     <th class="px-4 py-3">RequestDate</th>
@@ -80,13 +79,6 @@ export default function AllRentalHistory() {
                       <tr class="hover:bg-gray-100" key={rental.rentID}>
                         <td class="px-4 py-3 border">{index + 1}</td>
                         <td class="px-4 py-3 border">{rental.rentID}</td>
-                        <td class="px-4 py-3 border">
-                          {index === 2 ? (
-                            <div className="text-emerald-500">Regular</div>
-                          ) : (
-                            <div className="text-red-500">Non-Regular</div>
-                          )}
-                        </td>
                         <td class="px-4 py-3 border">{rental.carModel}</td>
                         <td class="px-4 py-3 border">{rental.userName}</td>
                         <td class="px-4 py-3 border">{rental.requestDate}</td>

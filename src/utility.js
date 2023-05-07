@@ -30,3 +30,67 @@ export const imageToBase64 = (imageFile) => {
     reader.onerror = (error) => reject(error);
   });
 };
+
+export function getActiveUser(data) {
+  const today = new Date();
+  const activeUsers = [];
+
+  // group data by user name
+  const users = data.reduce((acc, item) => {
+    if (!acc[item.userName]) {
+      acc[item.userName] = [];
+    }
+    acc[item.userName].push(item);
+    return acc;
+  }, {});
+
+  // check if a user has more than two items in the data array
+  Object.keys(users).forEach((user) => {
+    if (users[user].length > 1) {
+      // sort items by approved date (newest to oldest)
+      const sortedItems = users[user].sort(
+        (a, b) => new Date(b.approvedDate) - new Date(a.approvedDate)
+      );
+
+      // check if the newest item is within the past 3 months
+      const newestItemDate = new Date(sortedItems[0].approvedDate);
+      const threeMonthsAgo = new Date(
+        today.getFullYear(),
+        today.getMonth() - 3,
+        today.getDate()
+      );
+      if (newestItemDate > threeMonthsAgo) {
+        // check if the second newest item is within the past 6 months
+        const secondNewestItemDate = new Date(sortedItems[1].approvedDate);
+        const sixMonthsAgo = new Date(
+          today.getFullYear(),
+          today.getMonth() - 6,
+          today.getDate()
+        );
+        if (secondNewestItemDate > sixMonthsAgo) {
+          activeUsers.push(user);
+        }
+      }
+    }
+  });
+
+  return activeUsers;
+}
+
+//current date
+export function getCurrentDate() {
+  const today = new Date();
+  const year = today.getFullYear();
+  let month = today.getMonth() + 1;
+  let daye = today.getDate();
+
+  if (month < 10) {
+    month = `0${month}`;
+  }
+
+  if (daye < 10) {
+    daye = `0${daye}`;
+  }
+
+  return `${year}-${month}-${daye}`;
+}

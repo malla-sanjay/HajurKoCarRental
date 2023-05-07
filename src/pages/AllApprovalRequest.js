@@ -35,7 +35,7 @@ export default function AllApprovalRequest() {
       <div>
         <div>
           <h1 class="ml-10 text-4xl font-bold text-gray-800 mt-8 mb-4 mr-4">
-             Approval Requests
+            Approval Requests
           </h1>
 
           <div class="flex items-center mr-10 ml-10">
@@ -73,7 +73,7 @@ export default function AllApprovalRequest() {
                         : approvals.fullName.toLowerCase().includes(search);
                     })
                     .map((approval, index) => (
-                      <tr class="hover:bg-gray-100">
+                      <tr class="hover:bg-gray-100" key={index + 1}>
                         <td class="px-4 py-3 border">{index + 1}</td>
                         <td class="px-4 py-3 border">{approval.requestID}</td>
                         <td class="px-4 py-3 border">{approval.fullName}</td>

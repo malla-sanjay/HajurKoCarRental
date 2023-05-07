@@ -163,6 +163,7 @@ const Navibar = () => {
         <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <button
             type="button"
+            onClick={() => router.push("/NotificationByID")}
             className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
           >
             <span className="sr-only">View notifications</span>
@@ -288,7 +289,7 @@ const Navibar = () => {
                         Manage Cars
                       </Link>
                       <Link
-                        href="/DamageLogsByID"
+                        href="/DamageLogByID"
                         className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                       >
                         Damage Log
@@ -336,13 +337,6 @@ const Navibar = () => {
               className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
             >
               Cars
-            </a>
-            <a
-              aria-disabled
-              href="#"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-            >
-              Calendar
             </a>
           </div>
         </div>
